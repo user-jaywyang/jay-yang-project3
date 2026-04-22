@@ -23,7 +23,7 @@ router.get('/', async function (req, res) {
 
 // POST /api/sudoku; create a new game (requires auth)
 router.post('/', requireAuth, async function (req, res) {
-  const { difficulty } = req.body;
+  const difficulty = req.body.difficulty?.toLowerCase();
 
   if (difficulty !== 'easy' && difficulty !== 'normal') {
     return res.status(400).send({ error: 'Difficulty must be "easy" or "normal"' });
@@ -82,7 +82,7 @@ router.put('/:gameId', requireAuth, async function (req, res) {
   }
 });
 
-// DELETE /api/sudoku/:gameId; delete game (requires auth)
+// DELETE /api/sudoku/:gameId; delete game (requires auth, creator only)
 router.delete('/:gameId', requireAuth, async function (req, res) {
   try {
     const game = await getGameById(req.params.gameId);
@@ -90,7 +90,11 @@ router.delete('/:gameId', requireAuth, async function (req, res) {
       return res.status(404).send({ error: 'Game not found' });
     }
 
-    // Also remove associated highscores
+    // Only the creator can delete their game
+    if (game.creator !== req.username) {
+      return res.status(403).send({ error: 'Only the game creator can delete this game' });
+    }
+
     await deleteHighscoresByGameId(req.params.gameId);
     await deleteGame(req.params.gameId);
 
