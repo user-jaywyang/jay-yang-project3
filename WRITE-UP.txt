@@ -1,0 +1,58 @@
+SuDONKu — Project 3 Writeup
+
+
+1. Challenges:
+
+    This project was incredibly fair and straightforward. The demo code from class and the deployment guides (MongoDB
+and Render) were incredibly helpful and made portions of this project a breeze.
+
+    The overarching challenge in this project was transitioning from a frontend-only React app to a fullstack monorepo
+with Express, MongoDB, and JWT authentication all running together. Getting the highscore aggregation right (counting
+wins per user and sorting by most wins, then alphabetically for ties) took some trial and error with the data format
+coming back from Mongoose. Making the logged-out experience work correctly was also difficult.
+
+
+2. Additional Features:
+
+    Given more time, I would add themed board skins that change the entire visual experience of each game. An animal
+theme could replace numbers with animal icons on a jungle board with sound effects when placing pieces. A car theme
+could use racing graphics with engine sounds on correct placements and a checkered flag animation on completion.
+
+    I would also implement an in-game radio or music player where players could listen to a playlist while solving
+puzzles. It would sit in the corner of the screen as a small iPod-style widget.
+
+
+3. Assumptions:
+
+    I assumed that the JWT authentication approach taught in class would be sufficient for this project's security
+needs. Passwords are hashed with bcrypt before storage, so even if the database were compromised, the raw passwords
+would not be exposed.
+
+    I also assumed that running puzzle generation on the backend with the backtracking algorithm would be fast enough
+for a good user experience.
+
+
+4. Time Spent:
+
+    This project took approximately 15 hours to complete across about two weeks. The majority of the time was building
+the backend API routes, implementing authentication, and adapting the frontend components from Project 2 to work with
+the new API-driven data flow.
+
+
+5. Bonus Points:
+
+    I attempted three bonus point categories.
+
+    Early Submission:
+        48 hours early submission.
+
+    Password Encryption:
+        User passwords are hashed using bcrypt with 10 salt rounds before being stored in MongoDB. The implementation can
+    be found in backend/apis/user.api.js in the register and login route handlers.
+
+    Delete Game:
+        When a user who created a game navigates to that game's page, a Delete Game button appears in the game controls
+    area. Clicking this button sends a DELETE request to /api/sudoku/:gameId, which removes the game from the database
+    and also deletes all associated highscore entries for that game. The backend logic is in the DELETE route in
+    backend/apis/sudoku.api.js, and the frontend button is conditionally rendered in src/components/GameControls.jsx only
+    when the logged-in user matches the game's creator field.

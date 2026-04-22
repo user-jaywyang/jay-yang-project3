@@ -1,0 +1,336 @@
+/* ===== Board Wrapper ===== */
+.board-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.board-empty {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+/* ===== Sudoku Grid ===== */
+.sudoku-board {
+  display: grid;
+  background: #ffffff;
+  border-top: 2px solid var(--border-dark);
+  border-left: 2px solid var(--border-dark);
+  border-right: 2px solid var(--border-light);
+  border-bottom: 2px solid var(--border-light);
+}
+
+.board-9x9 {
+  grid-template-columns: repeat(9, 46px);
+  grid-template-rows: repeat(9, 46px);
+}
+
+.board-6x6 {
+  grid-template-columns: repeat(6, 56px);
+  grid-template-rows: repeat(6, 56px);
+}
+
+/* ===== Cell Base ===== */
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-main);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  border: 1px solid var(--border-dark);
+  background: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+/* ===== Cell States ===== */
+
+/* Given (pre-filled, not editable) */
+.cell-given {
+  background: #e0e0e0;
+  cursor: default;
+}
+
+/* Selected (currently focused) */
+.cell-selected {
+  background: #ffffcc;
+  outline: 2px solid var(--text-accent);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+/* Error (violates a rule) */
+.cell-error {
+  border: 2px solid #cc0000;
+  background: #ffe0e0;
+}
+
+/* Hint highlight */
+.cell-hint {
+  background: #ccffcc;
+  outline: 2px dashed #006600;
+  outline-offset: -2px;
+  animation: hint-pulse 1s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  0%, 100% { background: #ccffcc; }
+  50% { background: #a0f0a0; }
+}
+
+/* Locked (game complete) */
+.cell-locked {
+  cursor: default;
+  opacity: 0.85;
+}
+
+/* Hover */
+.cell:hover {
+  background: #f0f0d0;
+}
+
+.cell-given:hover {
+  background: #d8d8d8;
+}
+
+.cell-selected:hover {
+  background: #ffffcc;
+}
+
+.cell-error:hover {
+  background: #ffd0d0;
+}
+
+/* ===== Cell Value & Input ===== */
+.cell-value {
+  pointer-events: none;
+}
+
+.cell-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-accent);
+  font-family: var(--font-main);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  caret-color: transparent;
+}
+
+.cell-input:focus {
+  outline: none;
+}
+
+/* Remove number input spinners */
+.cell-input::-webkit-outer-spin-button,
+.cell-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ===== 9x9 Subgrid Borders (3x3) ===== */
+.board-9x9 .cell:nth-child(9n+3),
+.board-9x9 .cell:nth-child(9n+6) {
+  border-right: 3px solid var(--text-primary);
+}
+
+.board-9x9 .cell:nth-child(n+19):nth-child(-n+27),
+.board-9x9 .cell:nth-child(n+46):nth-child(-n+54) {
+  border-bottom: 3px solid var(--text-primary);
+}
+
+/* ===== 6x6 Subgrid Borders (3x2) ===== */
+.board-6x6 .cell:nth-child(6n+3) {
+  border-right: 3px solid var(--text-primary);
+}
+
+.board-6x6 .cell:nth-child(n+7):nth-child(-n+12),
+.board-6x6 .cell:nth-child(n+19):nth-child(-n+24) {
+  border-bottom: 3px solid var(--text-primary);
+}
+
+/* ===== Game Header ===== */
+.game-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.timer-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.timer-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.timer-value {
+  font-family: var(--font-pixel);
+  font-size: 1.6rem;
+  color: #cc0000;
+}
+
+/* ===== Game Controls ===== */
+.game-controls-wrapper {
+  margin-top: 16px;
+}
+
+.game-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.no-hints-msg {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #cc0000;
+  font-weight: bold;
+}
+
+.hint-info {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #555;
+  font-style: italic;
+}
+
+.btn-hint {
+  color: #006600;
+  font-weight: bold;
+}
+
+/* ===== Congrats Banner ===== */
+.congrats-banner {
+  margin: 16px 0;
+  padding: 12px;
+  background: linear-gradient(to right, #000080, #57a4f6);
+  border-top: 2px solid var(--border-light);
+  border-left: 2px solid var(--border-light);
+  border-right: 2px solid var(--border-darker);
+  border-bottom: 2px solid var(--border-darker);
+  text-align: center;
+}
+
+.congrats-inner h2 {
+  color: #ffd700;
+  margin-bottom: 4px;
+}
+
+.congrats-inner p {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+/* ===== Mobile ===== */
+
+/* ===== Dark Mode Board ===== */
+body.dark-mode .cell {
+  background: #2a1a3e;
+  color: #39FF14;
+}
+
+body.dark-mode .cell-given {
+  background: #3d2555;
+  color: #FFA500;
+}
+
+body.dark-mode .cell-selected {
+  background: #5a3d7a;
+  outline-color: #FFA500;
+}
+
+body.dark-mode .cell-error {
+  background: #4a1020;
+  border-color: #ff4444;
+}
+
+body.dark-mode .cell-hint {
+  background: #1a4a1a;
+  outline-color: #39FF14;
+}
+
+body.dark-mode .cell:hover {
+  background: #4a3060;
+}
+
+body.dark-mode .cell-given:hover {
+  background: #4a3565;
+}
+
+body.dark-mode .cell-input {
+  color: #39FF14;
+}
+
+body.dark-mode .cell input:focus {
+  background-color: rgba(255, 165, 0, 0.15);
+}
+
+body.dark-mode .congrats-banner {
+  background: linear-gradient(to right, #4b0082, #8000ff, #9a4dff);
+}
+
+body.dark-mode .congrats-inner h2 {
+  color: #39FF14;
+}
+
+body.dark-mode .timer-value {
+  color: #FFA500;
+}
+
+body.dark-mode .timer-label {
+  color: #b8b8b8;
+}
+
+body.dark-mode .no-hints-msg {
+  color: #FFA500;
+}
+
+body.dark-mode .hint-info {
+  color: #b8b8b8;
+}
+
+@media (max-width: 768px) {
+  .board-9x9 {
+    grid-template-columns: repeat(9, 34px);
+    grid-template-rows: repeat(9, 34px);
+  }
+
+  .board-6x6 {
+    grid-template-columns: repeat(6, 44px);
+    grid-template-rows: repeat(6, 44px);
+  }
+
+  .cell {
+    font-size: 1rem;
+  }
+
+  .cell-input {
+    font-size: 1rem;
+  }
+
+  .game-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .game-controls .btn {
+    width: 100%;
+    max-width: 240px;
+  }
+}
