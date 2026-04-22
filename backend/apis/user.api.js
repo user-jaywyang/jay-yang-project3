@@ -1,7 +1,7 @@
 // Auth flow pattern from: cs5610_spr23_mod3/backend/apis/user.js
 // JWT cookie pattern from: course lecture (Hunter Jorgenson, Setting JWT Token on Login)
 import express from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { createUser, findUserByUsername } from '../model/user.model.js';
 import { signToken } from '../utils/auth.js';
 
